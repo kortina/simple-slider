@@ -1,0 +1,52 @@
+
+<html>
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            font-size: 30px;
+        }
+        #slide-content {
+            margin: 30px;
+        }
+    </style>
+    <script>
+        function onDocReady(fn) {
+            // see if DOM is already available
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                // call on next available tick
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        }
+
+        function captureEvent(e) {
+            if (e.target.nodeName == "BODY") {
+                e.preventDefault();
+            }
+        }
+
+        function onKey(e) {
+            switch (e.code) {
+                case "ArrowLeft":
+                    captureEvent(e);
+                    return window.opener && window.opener.moveLeft();
+                case "ArrowRight":
+                    captureEvent(e);
+                    return window.opener && window.opener.moveRight();
+                default:
+                    console.log(`code: ${e.code}`);
+            }
+        }
+
+        function render(html) {
+            // console.log(html);
+            document.body.innerHTML = html;
+        }
+        onDocReady(function() {
+            document.addEventListener('keydown', onKey); // keyup resulted in arrows still working
+        });
+    </script>
+    <body>
+    </body>
+</html>
