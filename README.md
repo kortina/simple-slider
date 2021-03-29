@@ -16,6 +16,7 @@ See the [example slide](https://gist.githubusercontent.com/kortina/66d1263fe538b
 - img - renders a new slide
 - horizontal rule (`---`) - forces a slide break
 - h4, h5, h6 - render as part of the current slide (in case you want multiple lines of text)
+- everything else is speaker notes
 
 Want an iframe embed? Put it in an h1:
 
