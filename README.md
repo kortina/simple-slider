@@ -1,5 +1,7 @@
 # Simple Slider
 
+*Live demo [here](https://kortina.nyc/simple-slider/).*
+
 Great (and powerful) tools for creating slideshows from markdown exist: [gnab/remark](https://github.com/gnab/remark), [reveal.js](https://github.com/hakimel/reveal.js/).
 
 But the markdown still feels a *little* heavy sometimes.  Using `---` for slide breaks is particularly annoying.
