@@ -150,8 +150,25 @@ Sometimes when I'm editing, there will be several paragraphs where I don't want 
       }
 
       static formSubmit() {
-        console.log(`formSubmit: ${this.formValue()}`);
         this.fetchMarkdown();
+        return false;
+      }
+
+      static formSubmit() {
+        console.log(`formSubmit: ${this.formValue()}`);
+        var url = this.formValue();
+        if (`${url}` != "") {
+          var qsURL = this.qsURL();
+          if (qsURL == url) {
+            console.warning(`url already loaded`);
+          } else {
+            var l = document.location;
+            var e = encodeURIComponent(url);
+            var n = `${l.protocol}//${l.host}${l.pathname}?url=${e}`;
+            console.log(n);
+            document.location = n;
+          }
+        }
         return false;
       }
 
