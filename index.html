@@ -1,100 +1,114 @@
 <html>
-  <style>
-    div,
-    span,
-    form,
-    input {
-      padding: 0;
-      margin: 0;
-    }
-    body {
-      font-family: Helvetica, sans-serif;
-      font-size: 30px;
-      padding: 0;
-      margin: 0;
-    }
-    #slide-content {
-      max-width: 100vw;
-      margin: 0 30px;
-    }
-    #menu {
-      color: #ccc;
-      padding: none;
-      padding: 5px 30px 5px 30px;
-      font-size: 12px;
-      border-bottom: 1px solid #efefef;
-    }
-    #menu-controls {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-    /* flex spacing */
-    #help-icon,
-    #url-input,
-    input[type='submit'] {
-      margin-right: 10px;
-    }
-    #menu-controls form {
-      flex-grow: 1; /* everything else is 0 */
-    }
-    #help-icon {
-      height: 12px;
-      width: 12px;
-      font-size: 12px;
-      line-height: 12px;
-      border-style: 1px solid #ccc;
-      border-radius: 50%;
-      padding: 1px;
-      text-align: center;
-      border-radius: 50%;
-      display: inline-block;
-      color: #ccc;
-      font-weight: 100;
-      border: 1px solid #ccc;
-      display: inline-block;
-      cursor: pointer;
-    }
-    #help-info {
-      font-size: medium;
-    }
-    img {
-      max-width: 100%;
-    }
-    form {
-      border: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-    }
-    input {
-      border: 1px solid #ccc;
-      background-color: #fff;
-      padding: none;
-      margin: none;
-      font-size: 12px;
-      color: #ccc;
-      padding: 2px 4px;
-      display: inline-block;
-    }
-    #url-input {
-      color: #bbb;
-      flex-grow: 1;
-    }
-    #slide-index {
-      font-size: 12px;
-    }
-  </style>
-  <script src="https://unpkg.com/commonmark@0.29.3/dist/commonmark.js "></script>
-  <script>
-    /* globals commonmark */
-    function loadMarkdown(url) {}
-    class SimpleSlider {
-      static responseCache = {};
-      static DEFAULT_URL =
-        'https://gist.githubusercontent.com/kortina/66d1263fe538b30f4a489d8c97faa140/raw/80afc502d5038f4cddfc7cb3e4fd523f5ce101e0/very-simple-slide-example.md';
-        static USE_TEST_MD = false;
-        static TEST_MD = `
+<style>
+  div,
+  span,
+  form,
+  input {
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    font-family: Helvetica, sans-serif;
+    font-size: 30px;
+    padding: 0;
+    margin: 0;
+  }
+
+  #slide-content {
+    max-width: 100vw;
+    margin: 0 30px;
+  }
+
+  #menu {
+    color: #ccc;
+    padding: none;
+    padding: 5px 30px 5px 30px;
+    font-size: 12px;
+    border-bottom: 1px solid #efefef;
+  }
+
+  #menu-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  /* flex spacing */
+  #help-icon,
+  #url-input,
+  input[type='submit'] {
+    margin-right: 10px;
+  }
+
+  #menu-controls form {
+    flex-grow: 1;
+    /* everything else is 0 */
+  }
+
+  #help-icon {
+    height: 12px;
+    width: 12px;
+    font-size: 12px;
+    line-height: 12px;
+    border-style: 1px solid #ccc;
+    border-radius: 50%;
+    padding: 1px;
+    text-align: center;
+    border-radius: 50%;
+    display: inline-block;
+    color: #ccc;
+    font-weight: 100;
+    border: 1px solid #ccc;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  #help-info {
+    font-size: medium;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  form {
+    border: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+
+  input {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: none;
+    margin: none;
+    font-size: 12px;
+    color: #ccc;
+    padding: 2px 4px;
+    display: inline-block;
+  }
+
+  #url-input {
+    color: #bbb;
+    flex-grow: 1;
+  }
+
+  #slide-index {
+    font-size: 12px;
+  }
+</style>
+<script src="https://unpkg.com/commonmark@0.29.3/dist/commonmark.js "></script>
+<script>
+  /* globals commonmark */
+  function loadMarkdown(url) { }
+  class SimpleSlider {
+    static responseCache = {};
+    static DEFAULT_URL =
+      'https://gist.githubusercontent.com/kortina/66d1263fe538b30f4a489d8c97faa140/raw/80afc502d5038f4cddfc7cb3e4fd523f5ce101e0/very-simple-slide-example.md';
+    static USE_TEST_MD = false;
+    static TEST_MD = `
 # TEST
 
 ![hendrix](https://kortina.s3.amazonaws.com/_/git/sofia/eternal-apocalypse/hendrix-1.jpg)
@@ -134,359 +148,364 @@ Sometimes when I'm editing, there will be several paragraphs where I don't want 
 # That's about it.
         `;
 
-      constructor(markdownRaw) {
-        this.markdownRaw = markdownRaw;
-        this.slides = [];
-        this._currentSlide = null;
-      }
+    constructor(markdownRaw) {
+      this.markdownRaw = markdownRaw;
+      this.slides = [];
+      this._currentSlide = null;
+    }
 
-      static initURL() {
-        var p = new URLSearchParams(document.location.search);
-        var u = p.get('url') || this.DEFAULT_URL;
-        var el = document.getElementById('url-input');
-        if (u && !el.value) {
-          el.value = u;
-        }
-      }
+    static qsURL() {
+      var p = new URLSearchParams(document.location.search);
+      return p.get('url');
+    }
 
-      static formSubmit() {
-        this.fetchMarkdown();
-        return false;
-      }
-
-      static formSubmit() {
-        console.log(`formSubmit: ${this.formValue()}`);
-        var url = this.formValue();
-        if (`${url}` != "") {
-          var qsURL = this.qsURL();
-          if (qsURL == url) {
-            console.warning(`url already loaded`);
-          } else {
-            var l = document.location;
-            var e = encodeURIComponent(url);
-            var n = `${l.protocol}//${l.host}${l.pathname}?url=${e}`;
-            console.log(n);
-            document.location = n;
-          }
-        }
-        return false;
-      }
-
-      static formValue() {
-        var el = document.getElementById('url-input');
-        if (el) {
-          return el.value;
-        }
-      }
-
-      spawnSlide() {
-        if (this._currentSlide) {
-          this.slides.push(this._currentSlide);
-        }
-        this._currentSlide = {
-          slide: new commonmark.Node('document'),
-          speakerNotes: new commonmark.Node('document'),
-        };
-      }
-
-      static fetchMarkdown() {
-        this.fetchMarkdownFromURL(this.formValue());
-      }
-
-      static fetchMarkdownFromURL(url) {
-        var markdown = (this.USE_TEST_MD) ? this.TEST_MD : this.responseCache[url];
-        // url = url || 'https://raw.githubusercontent.com/erasabi/trekthroughs/master/pen_testing/RickdiculouslyEasy.md'
-        // url = "https://raw.githubusercontent.com/kortina/vscode-markdown-notes/master/README.md";
-        // url = "https://gist.githubusercontent.com/kortina/66d1263fe538b30f4a489d8c97faa140/raw/80afc502d5038f4cddfc7cb3e4fd523f5ce101e0/very-simple-slide-example.md";
-        if (markdown) {
-          this.onFetch(markdown);
-        } else {
-          fetch(url)
-            .then((response) => response.text())
-            .then((result) => {
-              this.responseCache[url] = result;
-              this.onFetch(result);
-            });
-        }
-      }
-
-      static onFetch(result) {
-        window.VSS = new SimpleSlider(result);
-        window.VSS.parseAndRenderMarkdown(result);
-      }
-
-      parseMarkdown(markdownRaw) {
-        var reader = new commonmark.Parser();
-        var parsed = reader.parse(markdownRaw);
-        window.PARSED = parsed;
-        var walker = parsed.walker();
-        var event, node;
-
-        var slide = new commonmark.Node('document');
-        var speakerNotes = new commonmark.Node('document');
-
-        var spawns = false;
-
-        while ((event = walker.next())) {
-          node = event.node;
-          this.prefetchImage(node, event);
-
-          // we only care about direct descendants of root `document`
-          if (!childOfRoot(node)) {
-            continue;
-          }
-
-          spawns = spawns || spawnsNewSlide(node, event);
-
-          // Make sure we only visit nodes once.
-          // NB: this will break if we flip / do NO handle nodes on-entering:
-          if (event.entering) {
-            continue;
-          }
-
-          // console.log({
-          //     type: node.type,
-          //     childOfRoot: childOfRoot(node),
-          //     firstChildType: firstChildType(node),
-          //     spawns: spawns,
-          //     entering: event.entering,
-          // });
-          var contentNode = this.cloneByTakingChildren(node);
-          node.unlink();
-
-          if (spawns) {
-            this.spawnSlide();
-            // reset spawns:
-            spawns = false;
-          }
-          this.addContentToCurrentSlide(contentNode);
-        }
-        this.spawnSlide();
-        // this.slides.push({slide: slide, speakerNotes: speakerNotes});
-      }
-
-      parseAndRenderMarkdown(markdownRaw) {
-        // TODO: display slide numbers
-        // TODO: speaker notes window: https://stackoverflow.com/questions/5277482/can-i-control-two-browser-windows-with-one-html5-app
-
-        this.parseMarkdown(markdownRaw);
-        window.SLIDES = this.slides;
-        moveTo(currentIndex());
-      }
-
-      addContentToCurrentSlide(contentNode) {
-        if (!this._currentSlide) {
-          this.spawnSlide();
-        }
-        if (rendersOnSlide(contentNode)) {
-          this._currentSlide.slide.appendChild(contentNode);
-        } else {
-          this._currentSlide.speakerNotes.appendChild(contentNode);
-        }
-      }
-
-      prefetchImage(node, event) {
-        if (event.entering && node.type == 'image' && node.destination) {
-          var img = new Image();
-          img.src = node.destination;
-        }
-      }
-
-      cloneByTakingChildren(node) {
-        var nn = new commonmark.Node(node.type);
-        nn.level = node.level;
-        while (node.firstChild) {
-          nn.appendChild(node.firstChild);
-        }
-        return nn;
+    static initURL() {
+      var u = this.qsURL() || this.DEFAULT_URL;
+      var el = document.getElementById('url-input');
+      if (u && !el.value) {
+        el.value = u;
       }
     }
 
-    function firstChildType(node) {
-      return node.firstChild && node.firstChild.type;
+    static formSubmit() {
+      this.fetchMarkdown();
+      return false;
     }
 
-    function rendersOnSlide(node) {
-      var fcType = firstChildType(node);
-
-      if (fcType == 'image') {
-        return true;
-      }
-      if (node.type == 'heading') {
-        return true;
+    static formSubmit() {
+      console.log(`formSubmit: ${this.formValue()}`);
+      var url = this.formValue();
+      if (`${url}` != "") {
+        var qsURL = this.qsURL();
+        if (qsURL == url) {
+          console.warning(`url already loaded`);
+        } else {
+          var l = document.location;
+          var e = encodeURIComponent(url);
+          var n = `${l.protocol}//${l.host}${l.pathname}?url=${e}`;
+          console.log(n);
+          document.location = n;
+        }
       }
       return false;
     }
 
-    function spawnsNewSlide(node, event) {
-      // Only spawn new slides when not entering,
-      // except for thematic_break, which has no non-entering event.
-      if (event.entering) {
-        return node.type == 'thematic_break';
-      }
-
-      var fcType = firstChildType(node);
-
-      if (fcType == 'image') {
-        return true;
-      }
-      if (node.type == 'heading' && node.level <= 3) {
-        return true;
-      }
-      return false;
-    }
-
-    function childOfRoot(node) {
-      return node.parent && node.parent.parent === null ? true : false;
-    }
-
-    function renderSlideIndex() {
-      if (!window.SLIDES) {
-        return;
-      }
-      var el = document.getElementById('slide-index');
-      el.innerHTML = `${this.currentIndex()} / ${window.SLIDES.length - 1}`;
-    }
-
-    function renderIndex(i) {
-      // TODO: update window.SLIDES to none if we load invalid URL?
-      if (!window.SLIDES || window.SLIDES.length < i) {
-        return;
-      }
-      this.renderSlideIndex();
-      var writer = new commonmark.HtmlRenderer();
-      var s = window.SLIDES[i];
-      document.getElementById('slide-content').innerHTML = writer.render(s.slide);
-
-      renderSpeakerNotes(i);
-    }
-
-    function onDocReady(fn) {
-      // see if DOM is already available
-      if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        // call on next available tick
-        setTimeout(fn, 1);
-      } else {
-        document.addEventListener('DOMContentLoaded', fn);
+    static formValue() {
+      var el = document.getElementById('url-input');
+      if (el) {
+        return el.value;
       }
     }
 
-    function moveTo(i) {
-      document.location.hash = `#${i}`;
-      renderIndex(i);
-    }
-
-    function currentIndex() {
-      var currentIndexStr = document.location.hash || '#0';
-      return parseInt(currentIndexStr.replace('#', ''), 10);
-    }
-
-    function moveLeft() {
-      moveTo(Math.max(currentIndex() - 1, 0));
-    }
-    function moveRight() {
-      var max = window.SLIDES ? window.SLIDES.length - 1 : 0;
-      moveTo(Math.min(currentIndex() + 1, max));
-    }
-
-    function onKey(e) {
-      if (e.target.nodeName == 'INPUT') {
-        return;
+    spawnSlide() {
+      if (this._currentSlide) {
+        this.slides.push(this._currentSlide);
       }
-      switch (e.code) {
-        case 'ArrowLeft':
-          captureEvent(e);
-          return moveLeft();
-        case 'ArrowRight':
-          captureEvent(e);
-          return moveRight();
-        case 'KeyN':
-          captureEvent(e);
-          return openSpeakerNotes();
-        case 'KeyM':
-          captureEvent(e);
-          return toggleMenu();
-        case 'Slash':
-          if (e.key == '?') {
-            captureEvent(e);
-            return toggleHelp();
-          }
-        default:
-          break;
-        // console.log(`code: ${e.code}`);
-      }
-    }
-
-    function captureEvent(e) {
-      if (e.target.nodeName == 'BODY') {
-        e.preventDefault();
-      }
-    }
-
-    function openSpeakerNotes() {
-      window.SN_WINDOW = window.open('slider-notes.html', 'secondary', 'width=600,height=1000');
-      window.SN_WINDOW.onload = function () {
-        renderSpeakerNotes(currentIndex());
+      this._currentSlide = {
+        slide: new commonmark.Node('document'),
+        speakerNotes: new commonmark.Node('document'),
       };
     }
 
-    function renderSpeakerNotes(i) {
-      if (window.SN_WINDOW) {
-        if (!window.SLIDES || window.SLIDES.length < i) {
-          return;
-        }
-        var writer = new commonmark.HtmlRenderer();
-        var s = window.SLIDES[i];
-        var html = writer.render(s.speakerNotes);
-        window.SN_WINDOW.render(html);
+    static fetchMarkdown() {
+      this.fetchMarkdownFromURL(this.formValue());
+    }
+
+    static fetchMarkdownFromURL(url) {
+      var markdown = (this.USE_TEST_MD) ? this.TEST_MD : this.responseCache[url];
+      // url = url || 'https://raw.githubusercontent.com/erasabi/trekthroughs/master/pen_testing/RickdiculouslyEasy.md'
+      // url = "https://raw.githubusercontent.com/kortina/vscode-markdown-notes/master/README.md";
+      // url = "https://gist.githubusercontent.com/kortina/66d1263fe538b30f4a489d8c97faa140/raw/80afc502d5038f4cddfc7cb3e4fd523f5ce101e0/very-simple-slide-example.md";
+      if (markdown) {
+        this.onFetch(markdown);
       } else {
-        console.log('Speaker notes window is not open.');
+        fetch(url)
+          .then((response) => response.text())
+          .then((result) => {
+            this.responseCache[url] = result;
+            this.onFetch(result);
+          });
       }
     }
 
-    function toggleMenu() {
-      toggleElementWithId('menu');
+    static onFetch(result) {
+      window.VSS = new SimpleSlider(result);
+      window.VSS.parseAndRenderMarkdown(result);
     }
 
-    function toggleHelp() {
-      toggleElementWithId('help-info');
+    parseMarkdown(markdownRaw) {
+      var reader = new commonmark.Parser();
+      var parsed = reader.parse(markdownRaw);
+      window.PARSED = parsed;
+      var walker = parsed.walker();
+      var event, node;
+
+      var slide = new commonmark.Node('document');
+      var speakerNotes = new commonmark.Node('document');
+
+      var spawns = false;
+
+      while ((event = walker.next())) {
+        node = event.node;
+        this.prefetchImage(node, event);
+
+        // we only care about direct descendants of root `document`
+        if (!childOfRoot(node)) {
+          continue;
+        }
+
+        spawns = spawns || spawnsNewSlide(node, event);
+
+        // Make sure we only visit nodes once.
+        // NB: this will break if we flip / do NO handle nodes on-entering:
+        if (event.entering) {
+          continue;
+        }
+
+        // console.log({
+        //     type: node.type,
+        //     childOfRoot: childOfRoot(node),
+        //     firstChildType: firstChildType(node),
+        //     spawns: spawns,
+        //     entering: event.entering,
+        // });
+        var contentNode = this.cloneByTakingChildren(node);
+        node.unlink();
+
+        if (spawns) {
+          this.spawnSlide();
+          // reset spawns:
+          spawns = false;
+        }
+        this.addContentToCurrentSlide(contentNode);
+      }
+      this.spawnSlide();
+      // this.slides.push({slide: slide, speakerNotes: speakerNotes});
     }
 
-    function toggleElementWithId(id) {
-      var el = document.getElementById(id);
-      var d = ['', 'none', null, undefined].includes(el.style.display) ? 'block' : 'none';
-      el.style.display = d;
+    parseAndRenderMarkdown(markdownRaw) {
+      // TODO: display slide numbers
+      // TODO: speaker notes window: https://stackoverflow.com/questions/5277482/can-i-control-two-browser-windows-with-one-html5-app
+
+      this.parseMarkdown(markdownRaw);
+      window.SLIDES = this.slides;
+      moveTo(currentIndex());
     }
 
-    onDocReady(function () {
-      SimpleSlider.initURL();
-      SimpleSlider.fetchMarkdown();
-      document.addEventListener('keydown', onKey); // keyup resulted in arrows still working
-      document.getElementById('help-icon').addEventListener('click', toggleHelp);
-    });
-  </script>
-  <body>
-    <div id="menu" style="display: block">
-      <div id="menu-controls">
-        <div id="help-icon" title="help">?</div>
-        <form onsubmit="return SimpleSlider.formSubmit();">
-          <input id="url-input" type="text" />
-          <input type="submit" value="Load" />
-        </form>
-        <div id="slide-index"></div>
-      </div>
-      <div id="help-info" style="display: none">
-        <pre>
+    addContentToCurrentSlide(contentNode) {
+      if (!this._currentSlide) {
+        this.spawnSlide();
+      }
+      if (rendersOnSlide(contentNode)) {
+        this._currentSlide.slide.appendChild(contentNode);
+      } else {
+        this._currentSlide.speakerNotes.appendChild(contentNode);
+      }
+    }
+
+    prefetchImage(node, event) {
+      if (event.entering && node.type == 'image' && node.destination) {
+        var img = new Image();
+        img.src = node.destination;
+      }
+    }
+
+    cloneByTakingChildren(node) {
+      var nn = new commonmark.Node(node.type);
+      nn.level = node.level;
+      while (node.firstChild) {
+        nn.appendChild(node.firstChild);
+      }
+      return nn;
+    }
+  }
+
+  function firstChildType(node) {
+    return node.firstChild && node.firstChild.type;
+  }
+
+  function rendersOnSlide(node) {
+    var fcType = firstChildType(node);
+
+    if (fcType == 'image') {
+      return true;
+    }
+    if (node.type == 'heading') {
+      return true;
+    }
+    return false;
+  }
+
+  function spawnsNewSlide(node, event) {
+    // Only spawn new slides when not entering,
+    // except for thematic_break, which has no non-entering event.
+    if (event.entering) {
+      return node.type == 'thematic_break';
+    }
+
+    var fcType = firstChildType(node);
+
+    if (fcType == 'image') {
+      return true;
+    }
+    if (node.type == 'heading' && node.level <= 3) {
+      return true;
+    }
+    return false;
+  }
+
+  function childOfRoot(node) {
+    return node.parent && node.parent.parent === null ? true : false;
+  }
+
+  function renderSlideIndex() {
+    if (!window.SLIDES) {
+      return;
+    }
+    var el = document.getElementById('slide-index');
+    el.innerHTML = `${this.currentIndex()} / ${window.SLIDES.length - 1}`;
+  }
+
+  function renderIndex(i) {
+    // TODO: update window.SLIDES to none if we load invalid URL?
+    if (!window.SLIDES || window.SLIDES.length < i) {
+      return;
+    }
+    this.renderSlideIndex();
+    var writer = new commonmark.HtmlRenderer();
+    var s = window.SLIDES[i];
+    document.getElementById('slide-content').innerHTML = writer.render(s.slide);
+
+    renderSpeakerNotes(i);
+  }
+
+  function onDocReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      // call on next available tick
+      setTimeout(fn, 1);
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+
+  function moveTo(i) {
+    document.location.hash = `#${i}`;
+    renderIndex(i);
+  }
+
+  function currentIndex() {
+    var currentIndexStr = document.location.hash || '#0';
+    return parseInt(currentIndexStr.replace('#', ''), 10);
+  }
+
+  function moveLeft() {
+    moveTo(Math.max(currentIndex() - 1, 0));
+  }
+  function moveRight() {
+    var max = window.SLIDES ? window.SLIDES.length - 1 : 0;
+    moveTo(Math.min(currentIndex() + 1, max));
+  }
+
+  function onKey(e) {
+    if (e.target.nodeName == 'INPUT') {
+      return;
+    }
+    switch (e.code) {
+      case 'ArrowLeft':
+        captureEvent(e);
+        return moveLeft();
+      case 'ArrowRight':
+        captureEvent(e);
+        return moveRight();
+      case 'KeyN':
+        captureEvent(e);
+        return openSpeakerNotes();
+      case 'KeyM':
+        captureEvent(e);
+        return toggleMenu();
+      case 'Slash':
+        if (e.key == '?') {
+          captureEvent(e);
+          return toggleHelp();
+        }
+      default:
+        break;
+      // console.log(`code: ${e.code}`);
+    }
+  }
+
+  function captureEvent(e) {
+    if (e.target.nodeName == 'BODY') {
+      e.preventDefault();
+    }
+  }
+
+  function openSpeakerNotes() {
+    window.SN_WINDOW = window.open('slider-notes.html', 'secondary', 'width=600,height=1000');
+    window.SN_WINDOW.onload = function () {
+      renderSpeakerNotes(currentIndex());
+    };
+  }
+
+  function renderSpeakerNotes(i) {
+    if (window.SN_WINDOW) {
+      if (!window.SLIDES || window.SLIDES.length < i) {
+        return;
+      }
+      var writer = new commonmark.HtmlRenderer();
+      var s = window.SLIDES[i];
+      var html = writer.render(s.speakerNotes);
+      window.SN_WINDOW.render(html);
+    } else {
+      console.log('Speaker notes window is not open.');
+    }
+  }
+
+  function toggleMenu() {
+    toggleElementWithId('menu');
+  }
+
+  function toggleHelp() {
+    toggleElementWithId('help-info');
+  }
+
+  function toggleElementWithId(id) {
+    var el = document.getElementById(id);
+    var d = ['', 'none', null, undefined].includes(el.style.display) ? 'block' : 'none';
+    el.style.display = d;
+  }
+
+  onDocReady(function () {
+    SimpleSlider.initURL();
+    SimpleSlider.fetchMarkdown();
+    document.addEventListener('keydown', onKey); // keyup resulted in arrows still working
+    document.getElementById('help-icon').addEventListener('click', toggleHelp);
+  });
+</script>
+
+<body>
+  <div id="menu" style="display: block">
+    <div id="menu-controls">
+      <div id="help-icon" title="help">?</div>
+      <form onsubmit="return SimpleSlider.formSubmit();">
+        <input id="url-input" type="text" />
+        <input type="submit" value="Load" />
+      </form>
+      <div id="slide-index"></div>
+    </div>
+    <div id="help-info" style="display: none">
+      <pre>
 Keyboard Shortcuts
 n   open speaker notes
 →   next slide
 ←   prev slide
 m   show / hide menu
 ?   show / hide help
-                </pre
-        >
-      </div>
+                </pre>
     </div>
-    <div id="slide-content"></div>
-  </body>
+  </div>
+  <div id="slide-content"></div>
+</body>
+
 </html>
