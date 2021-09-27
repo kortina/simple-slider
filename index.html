@@ -167,12 +167,7 @@ Sometimes when I'm editing, there will be several paragraphs where I don't want 
       }
     }
 
-    static formSubmit() {
-      this.fetchMarkdown();
-      return false;
-    }
-
-    static formSubmit() {
+    static formSubmit(event) {
       console.log(`formSubmit: ${this.formValue()}`);
       var url = this.formValue();
       if (`${url}` != "") {
@@ -259,15 +254,19 @@ Sometimes when I'm editing, there will be several paragraphs where I don't want 
         // Make sure we only visit nodes once.
         // NB: this will break if we flip / do NO handle nodes on-entering:
         if (event.entering) {
-          continue;
+          // code_block doesn't seem to have the non-entering event
+          if (node.type != 'code_block') {
+            continue;
+          }
         }
 
-        // console.log({
+        // console.log(node.type, {
         //     type: node.type,
         //     childOfRoot: childOfRoot(node),
         //     firstChildType: firstChildType(node),
         //     spawns: spawns,
         //     entering: event.entering,
+        //     iH: node.innerHTML,
         // });
         var contentNode = this.cloneByTakingChildren(node);
         node.unlink();
@@ -316,6 +315,7 @@ Sometimes when I'm editing, there will be several paragraphs where I don't want 
       while (node.firstChild) {
         nn.appendChild(node.firstChild);
       }
+      nn.literal = node.literal;
       return nn;
     }
   }

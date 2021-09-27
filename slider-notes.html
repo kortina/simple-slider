@@ -8,6 +8,9 @@
         #slide-content {
             margin: 30px;
         }
+        pre {
+            font-size: 60%;
+        }
     </style>
     <script>
         function onDocReady(fn) {
@@ -40,6 +43,9 @@
         }
 
         function render(html) {
+            // scroll to top of document
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+
             // console.log(html);
             document.body.innerHTML = html;
         }
