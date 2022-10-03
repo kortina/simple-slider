@@ -26,6 +26,10 @@
     padding: 5px 30px 5px 30px;
     font-size: 12px;
     border-bottom: 1px solid #efefef;
+    z-index: 99;
+    position: absolute;
+    background: #ffffff;
+    width: 100%;
   }
 
   #menu-controls {
@@ -69,7 +73,11 @@
   }
 
   img {
+    /* constrain by either height or width, whatever hits the edge first */
     max-width: 100%;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
   }
 
   form {
