@@ -1,14 +1,16 @@
 # Simple Slider
 
-*Live demo [here](https://kortina.nyc/simple-slider/).*
+_Live demo [here](https://kortina.nyc/simple-slider/)._
 
 Great (and powerful) tools for creating slideshows from markdown exist: [gnab/remark](https://github.com/gnab/remark), [reveal.js](https://github.com/hakimel/reveal.js/).
 
-But the markdown still feels a *little* heavy sometimes.  Using `---` for slide breaks is particularly annoying.
+But the markdown still feels a _little_ heavy sometimes. Using `---` for slide breaks is particularly annoying.
 
 This is a very simple slider that makes stupid assumptions about (1) what elements will render on a new slide and (2) what constitutes speaker notes.
 
-See the [example slide](https://gist.githubusercontent.com/kortina/66d1263fe538b30f4a489d8c97faa140/raw/4fff2f6f196689e3519f9f2945c016e1b79f8fd3/very-simple-slide-example.md) for full details.
+See the example slide [raw](https://gist.githubusercontent.com/kortina/66d1263fe538b30f4a489d8c97faa140/raw/4fff2f6f196689e3519f9f2945c016e1b79f8fd3/very-simple-slide-example.md) or [gist](https://gist.github.com/kortina/66d1263fe538b30f4a489d8c97faa140) for full details.
+
+NB: Input the `raw` url for your gist into the slider (not the gist url).
 
 #### Summary
 
